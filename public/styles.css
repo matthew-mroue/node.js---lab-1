@@ -1,7 +1,6 @@
-html{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+body {
+    background-color: turquoise;
 }
 .container {
     display: flex;
@@ -11,9 +10,24 @@ html{
 
 button {
     border: 1px solid black;
-
 }
-button:hover {
+button :hover {
     cursor: pointer;
+}
+.deleteBtn {
+    border-radius: 50%;
+    background-color: red;
+}
+.add-animal {
+    display: flex;
+    flex-direction: column;
+}
+input {
+    justify-content: space-around;
+}
+.const-animals {
+    display: flex;
+    flex-direction: column;
+    
 }
 

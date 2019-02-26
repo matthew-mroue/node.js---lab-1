@@ -1,9 +1,7 @@
 "use strict";
 
 const cartItems = {
-    templateUrl: 
-    `
-`,
+    templateUrl: "app.component.html",
     controller: ["CartService", function(CartService) {
         const vm = this;
 
