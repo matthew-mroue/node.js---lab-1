@@ -1,60 +1,34 @@
 "use strict";
 const express = require("express");
 const cartItems = express.Router();
-const cartList = [
-    {
-    id: 0,
-    product: "Bat",
-    price: 50,
-    quantity: 1
-    },
-    
-    {
-    id: 1,
-    product: "Cat",
-    price: 100,
-    quantity: 1
-    },
-    
-    {
-    id: 2,
-    product: "Dog",
-    price: 900,
-    quantity: 1
-    }
-];
-cartItems.get("/cart-items", function(req, res) {
-    res.send(cartList);
-    console.log("GET request made");
+const pool = require("./pg-connection-pool")
+
+function selectAll(req, res) {
+    pool.query("select * from shoppingcart").then(function(result) {
+        res.send(result.rows);
 });
+};
+cartItems.get("/cart-items", function(req, res) {
+    selectAll(req, res);
+        });
 
 cartItems.post("/cart-items", function(req, res) { 
-    cartList.push(req.body); // 
-    console.log("POST method made");
-    res.send(cartList); 
+        pool.query("insert into shoppingcart (product, price, quantity) values($1::text, $2::int, $3::int)",
+         [req.body.product, req.body.price, req.body.quantity]).then(function() {
+            selectAll(req, res);
+             })
 });
 
 cartItems.put("/cart-items/:id", function(req, res) { 
-    for (let i = 0; i < cartList.length; i++) {
-        if (cartList[i].id == req.params.id) {
-            cartList.splice(i, 1, req.body);
-            console.log(req.body)
-            console.log(req.params.id);
-            res.send(cartList);
-            break;
-        } 
-    } 
-    console.log("PUT request made");
-})
+    pool.query("update shoppingcart set quantity=$1::int where id=$2::int",
+    [req.body.quantity, req.params.id]).then(function() {
+        selectAll(req, res)
+        })
+    })
 cartItems.delete("/cart-items/:id", function(req, res) {
-    for (let i = 0; i < cartList.length; i++) {
-        if (cartList[i].id == req.params.id) {
-            cartList.splice(i, 1);
-            console.log(req.params.id);
-            res.send(cartList);
-            break;
-        }
-    }
-    console.log("DELETE request made");
-});
+        pool.query("delete from shoppingcart where id=$1::int", 
+        [req.params.id]).then(function() {
+             selectAll(req, res);
+            })
+        })
 module.exports = cartItems;

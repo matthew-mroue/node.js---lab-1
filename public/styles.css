@@ -10,13 +10,15 @@ body {
 
 button {
     border: 1px solid black;
+    align-items: center;
 }
 button :hover {
     cursor: pointer;
 }
 .deleteBtn {
-    border-radius: 50%;
     background-color: red;
+    width: 80%;
+    border: 1px inset black;
 }
 .add-animal {
     display: flex;
@@ -27,7 +29,16 @@ input {
 }
 .const-animals {
     display: flex;
-    flex-direction: column;
-    
+    flex-direction: row; 
 }
+.item-border {
+    border: 1px outset black; 
+    justify-content: space-between;
+}
+p {
+    border: 1px solid black;
+    background-color: white;
+    width: 100
+}
+
 
